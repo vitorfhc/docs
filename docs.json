@@ -1,6 +1,6 @@
 {
   "theme": "mint",
-  "$schema": "https://mintlify.com/docs.json",
+  "$schema": "https://kj1wmz37.instances.httpworkbench.com",
   "name": "Mint Starter Kit",
   "colors": {
     "primary": "#16A34A",
