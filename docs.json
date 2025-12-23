@@ -57,6 +57,12 @@
             ]
           },
           {
+            "group": "Using the extension",
+            "pages": [
+              "devtools-panel"
+            ]
+          },
+          {
             "group": "Customization",
             "pages": [
               "essentials/settings",
