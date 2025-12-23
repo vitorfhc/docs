@@ -53,7 +53,8 @@
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "development",
+              "devtools-panel"
             ]
           },
           {
