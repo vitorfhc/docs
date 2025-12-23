@@ -84,15 +84,15 @@ Once installed, you can start using Gecko to discover CSPT vulnerabilities.
 
 <AccordionGroup>
   <Accordion icon="table" title="View findings in DevTools">
-    1. Open DevTools in your browser
+    1. Open DevTools in your browser (press `F12`)
     2. Navigate to the **Gecko** panel
-    3. Browse the compact findings table showing:
-       - Finding index number
-       - Source value
-       - Source URL (labeled with "S")
-       - Target URL (labeled with "T")
-    4. Click on any finding row to view detailed information
-    5. Use the **Clear All** button to remove all findings
+    3. Browse the compact findings table
+    4. **Click on any finding row** to open a detailed drawer view
+    5. Use the **Clear All** button in the header to remove all findings
+    
+    <Note>
+    You must click on the row itself to view details. The URLs displayed in the table are not clickable links.
+    </Note>
   </Accordion>
   
   <Accordion icon="gear" title="Configure settings">
@@ -107,6 +107,10 @@ Once installed, you can start using Gecko to discover CSPT vulnerabilities.
 ## Next steps
 
 <CardGroup cols={2}>
+
+<Card title="DevTools panel" icon="table" href="/devtools-panel">
+  Learn about the compact findings table and how to use it effectively.
+</Card>
 
 <Card title="Development guide" icon="code" href="/development">
   Learn how to contribute to Gecko development.
