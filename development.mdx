@@ -91,20 +91,25 @@ gecko/
 
 The findings table component (`src/components/findings-table.tsx`) displays discovered CSPT vulnerabilities with a compact, modern interface:
 
-- **Header**: Shows finding count and "Clear All" button
+- **Header**: Shows finding count in format "Findings (N)" and "Clear All" button
 - **Table rows**: Display finding index, source value, source URL (S), and target URL (T)
-- **Hover effects**: Smooth transitions on row hover
-- **Click handling**: Opens detailed view in drawer
+- **Hover effects**: Smooth transitions on row hover with `transition-colors` class
+- **Click handling**: Entire row is clickable and opens detailed view in drawer
 
-### Recent improvements
+<Note>
+Users must click on the row to view details. The URLs in the table are not clickable links - they're displayed for quick reference only.
+</Note>
 
-The findings table has been updated with:
+### Recent improvements (PR #7)
 
-- Compact design with reduced padding and smaller fonts
-- Finding count displayed in the header
-- Inline source and target URLs with "S" and "T" labels
-- Improved visual hierarchy with better typography
-- Smoother hover transitions
+The findings table was recently improved with:
+
+- **Compact design**: Reduced padding (`py-2` instead of `py-4`) and smaller fonts (13px for values, 10px for URLs)
+- **Finding count**: Displayed in header as "Findings (N)" with uppercase styling
+- **Inline URLs**: Source and target URLs shown on same line with "S" and "T" labels
+- **Better hierarchy**: Source value emphasized with `font-medium`, URLs in lighter gray
+- **Smoother transitions**: Added `transition-colors` class for hover effects
+- **Smaller button**: "Clear All" button uses 10px font with uppercase tracking
 
 ## Making changes
 
