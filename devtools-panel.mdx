@@ -1,0 +1,42 @@
+---
+title: "Devtools panel"
+description: "Using the browser extension devtools panel to view and manage findings"
+---
+
+## Overview
+
+The devtools panel provides a compact interface for viewing security findings detected by the Gecko extension. The panel displays findings in a streamlined table format that makes it easy to scan through multiple results.
+
+## Findings table
+
+The findings table shows all detected security issues in a compact, easy-to-read format. Each row displays:
+
+- **Index**: A sequential number for each finding
+- **Value**: The sensitive data or security issue detected
+- **Source (S)**: The URL where the finding originated
+- **Target (T)**: The destination URL where the data was sent
+
+### Viewing finding details
+
+To view the complete details of a finding:
+
+1. Click on any row in the findings table
+2. A modal will open displaying the full information about the finding
+3. Review the complete source and target URLs, along with additional context
+
+<Tip>
+  Click directly on any finding row to open the details modal. The compact view helps you quickly scan through findings while keeping detailed information just one click away.
+</Tip>
+
+## Managing findings
+
+### Clearing findings
+
+To remove all findings from the table:
+
+1. Click the **Clear All** button in the top-right corner of the findings table
+2. All findings will be removed from the current view
+
+<Note>
+  The findings count is displayed in the table header, showing you how many security issues have been detected in the current session.
+</Note>
