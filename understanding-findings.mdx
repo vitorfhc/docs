@@ -1,0 +1,195 @@
+---
+title: 'Understanding findings'
+description: 'Learn how to interpret and validate Gecko findings'
+icon: 'lightbulb'
+---
+
+Gecko identifies potential Client-Side Path Traversal (CSPT) vulnerabilities by monitoring how user-controlled input flows into HTTP requests. Understanding what each finding means is crucial for effective security testing.
+
+## Anatomy of a finding
+
+Each finding in Gecko consists of two main components:
+
+### Source
+
+The **source** is where the potentially malicious input originates. Gecko monitors several types of sources:
+
+<AccordionGroup>
+  <Accordion title="Query parameter" icon="question">
+    Values extracted from URL query parameters.
+    
+    **Example**: In `https://example.com/app?file=config.json`, the value `config.json` is extracted from the `file` parameter.
+    
+    **Risk**: Attackers can easily manipulate query parameters to inject malicious paths.
+  </Accordion>
+
+  <Accordion title="Query parameter (URL encoded)" icon="code">
+    Values from query parameters that are URL encoded.
+    
+    **Example**: In `https://example.com/app?path=%2Fetc%2Fpasswd`, the encoded value `%2Fetc%2Fpasswd` (which decodes to `/etc/passwd`) is tracked.
+  </Accordion>
+
+  <Accordion title="Query parameter (URL decoded)" icon="unlock">
+    The decoded version of URL-encoded query parameter values.
+    
+    **Example**: The decoded value `/etc/passwd` from `%2Fetc%2Fpasswd`.
+  </Accordion>
+
+  <Accordion title="Path" icon="route">
+    Values extracted from URL path segments.
+    
+    **Example**: In `https://example.com/files/documents/report.pdf`, segments like `documents` and `report.pdf` are tracked.
+    
+    **Risk**: Path segments can sometimes be manipulated through routing or URL rewriting.
+  </Accordion>
+
+  <Accordion title="Path (URL encoded/decoded)" icon="route">
+    Similar to query parameters, path values can also be tracked in their encoded and decoded forms.
+  </Accordion>
+
+  <Accordion title="Null variable" icon="ban">
+    JavaScript variables that are null or undefined.
+    
+    **Risk**: If an application doesn't properly validate variables before using them in paths, null/undefined values might allow path traversal.
+  </Accordion>
+</AccordionGroup>
+
+### Target
+
+The **target** is an HTTP request that contains the source value. This indicates that user-controlled input is being used to construct a request URL, which could be a vulnerability.
+
+**Example**: If the source is `config.json` from a query parameter, and Gecko detects an HTTP request to `https://api.example.com/files/config.json`, this would be flagged as a finding.
+
+## Types of matches
+
+Gecko can identify findings using different matching strategies:
+
+### Exact match
+
+The entire source value appears in the target URL.
+
+**Example**:
+- Source: `admin/config.json`
+- Target: `https://api.example.com/files/admin/config.json`
+- Match: Exact
+
+### Partial match
+
+Only part of the source value appears in the target URL.
+
+**Example**:
+- Source: `admin/config.json`
+- Target: `https://api.example.com/files/config.json`
+- Match: Partial (`config.json`)
+
+Partial matches can be configured in the [settings](/configuration) to require a minimum length.
+
+### Case-insensitive match
+
+The source value matches the target URL when ignoring case differences.
+
+**Example**:
+- Source: `Config.JSON`
+- Target: `https://api.example.com/files/config.json`
+- Match: Case-insensitive
+
+## Validating findings
+
+Not all findings are actual vulnerabilities. Follow these steps to validate each finding:
+
+<Steps>
+<Step title="Review the finding">
+
+Examine the source and target URLs to understand the data flow:
+- Where did the source value come from?
+- How is it being used in the target request?
+- Is there any transformation or validation happening?
+
+</Step>
+
+<Step title="Test for path traversal">
+
+Try to exploit the potential vulnerability by manipulating the source:
+
+1. Modify the query parameter or path to include path traversal sequences like `../`
+2. Try to access sensitive files like `/etc/passwd` (on Linux) or `C:\Windows\System32\config\sam` (on Windows)
+3. Observe if the application allows access to unintended resources
+
+**Example**: If the finding shows `?file=config.json`, try `?file=../../../etc/passwd`
+
+</Step>
+
+<Step title="Check for validation">
+
+Determine if the application has proper input validation:
+- Does it sanitize path traversal sequences?
+- Does it restrict access to a specific directory?
+- Does it validate file extensions or paths?
+
+</Step>
+
+<Step title="Assess impact">
+
+If the vulnerability is confirmed, evaluate its severity:
+- What files or resources can be accessed?
+- Is authentication required?
+- What is the potential impact on confidentiality, integrity, or availability?
+
+</Step>
+</Steps>
+
+## Common false positives
+
+Gecko may flag findings that aren't actual vulnerabilities:
+
+<AccordionGroup>
+  <Accordion title="Legitimate file access" icon="check">
+    The application may legitimately use user input to access files within a restricted directory.
+    
+    **Example**: A document viewer that loads files from a user's personal folder.
+    
+    **Validation**: Check if the application properly restricts access to only authorized files.
+  </Accordion>
+
+  <Accordion title="Coincidental matches" icon="shuffle">
+    The source value may coincidentally appear in the target URL without any actual relationship.
+    
+    **Example**: A query parameter `id=123` matching a request to `/api/users/123` where `123` is a user ID, not derived from the query parameter.
+    
+    **Validation**: Verify if the source value actually influences the target request.
+  </Accordion>
+
+  <Accordion title="Short partial matches" icon="text-size">
+    Very short partial matches may be coincidental.
+    
+    **Example**: A source value of `file` matching any URL containing the word "file".
+    
+    **Solution**: Increase the minimum partial match length in [settings](/configuration).
+  </Accordion>
+</AccordionGroup>
+
+## Best practices
+
+<CardGroup cols={2}>
+  <Card title="Test systematically" icon="list-check">
+    Work through findings methodically, starting with the most suspicious ones.
+  </Card>
+  <Card title="Document your findings" icon="file-pen">
+    Keep notes on which findings are real vulnerabilities and which are false positives.
+  </Card>
+  <Card title="Adjust settings" icon="sliders">
+    Fine-tune Gecko's configuration to reduce false positives for your specific testing scenario.
+  </Card>
+  <Card title="Verify manually" icon="hand-pointer">
+    Always manually verify potential vulnerabilities before reporting them.
+  </Card>
+</CardGroup>
+
+## Reporting vulnerabilities
+
+If you discover a real CSPT vulnerability:
+
+1. **Document the vulnerability**: Include the source URL, target URL, steps to reproduce, and potential impact
+2. **Follow responsible disclosure**: Report the vulnerability to the application owner through their security contact or bug bounty program
+3. **Don't exploit in production**: Only test in authorized environments with permission
+4. **Provide remediation guidance**: Suggest how to fix the vulnerability (e.g., input validation, path sanitization)
