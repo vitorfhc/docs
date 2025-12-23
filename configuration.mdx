@@ -1,0 +1,124 @@
+---
+title: 'Configuration'
+description: 'Customize Gecko scanning and matching behavior'
+icon: 'sliders'
+---
+
+Gecko provides several configuration options to customize how it scans for vulnerabilities and matches patterns. Access these settings by clicking the Gecko extension icon in your browser toolbar.
+
+## Scanners
+
+Control which types of sources Gecko monitors for potential CSPT vulnerabilities.
+
+### Search query values
+
+<ResponseField name="searchQueryValues" type="boolean" default={true}>
+When enabled, Gecko extracts values from URL query parameters and monitors if they appear in subsequent HTTP requests.
+
+**Example**: If a URL contains `?file=config.json`, Gecko will check if `config.json` appears in any outgoing requests.
+</ResponseField>
+
+### Search path
+
+<ResponseField name="searchPath" type="boolean" default={true}>
+When enabled, Gecko extracts values from URL path segments and monitors if they appear in subsequent HTTP requests.
+
+**Example**: If a URL is `/app/users/admin`, Gecko will check if path segments like `users` or `admin` appear in any outgoing requests.
+</ResponseField>
+
+### Search null/undefined
+
+<ResponseField name="searchNullUndefined" type="boolean" default={true}>
+When enabled, Gecko monitors for JavaScript variables that are null or undefined and checks if they're used in HTTP requests.
+
+This can help identify cases where missing input validation allows null/undefined values to be used in path construction.
+</ResponseField>
+
+## Matching rules
+
+Configure how Gecko matches source values in target URLs.
+
+### Partial matching
+
+<ResponseField name="partial" type="boolean" default={true}>
+When enabled, Gecko will flag findings even when only part of the source value appears in the target URL.
+
+**Example**: If the source value is `config.json` and the target URL contains `config`, it will be flagged as a potential vulnerability.
+
+Disable this if you're getting too many false positives and only want exact matches.
+</ResponseField>
+
+### Partial minimum length
+
+<ResponseField name="partialMinLength" type="number" default={3}>
+The minimum length of a partial match to be considered a finding. Only applies when partial matching is enabled.
+
+Increase this value to reduce false positives from very short matches.
+
+**Example**: With a minimum length of 5, a source value of `config.json` would need at least 5 consecutive characters (like `confi` or `config`) to match in the target URL.
+</ResponseField>
+
+### Case insensitive
+
+<ResponseField name="caseInsensitive" type="boolean" default={true}>
+When enabled, Gecko ignores case differences when matching source values in target URLs.
+
+**Example**: A source value of `Config.json` would match `config.json` in the target URL.
+
+Disable this if you want case-sensitive matching only.
+</ResponseField>
+
+## Display options
+
+Control how findings are displayed in the DevTools panel.
+
+### Clear on refresh
+
+<ResponseField name="clearOnRefresh" type="boolean" default={false}>
+When enabled, Gecko clears all findings when you refresh the page or navigate to a new URL.
+
+Enable this if you want to start fresh for each page you test. Disable it if you want to accumulate findings across multiple pages.
+</ResponseField>
+
+## Recommended configurations
+
+<AccordionGroup>
+  <Accordion title="High sensitivity (more findings)" icon="magnifying-glass-plus">
+    Use these settings to catch as many potential vulnerabilities as possible:
+    
+    - **Scanners**: Enable all options
+    - **Partial matching**: Enabled
+    - **Partial minimum length**: 3
+    - **Case insensitive**: Enabled
+    - **Clear on refresh**: Disabled
+    
+    This configuration may produce more false positives but ensures you don't miss any potential vulnerabilities.
+  </Accordion>
+
+  <Accordion title="Low sensitivity (fewer false positives)" icon="magnifying-glass-minus">
+    Use these settings to reduce false positives:
+    
+    - **Scanners**: Enable only query values and path
+    - **Partial matching**: Disabled
+    - **Case insensitive**: Disabled
+    - **Clear on refresh**: Enabled
+    
+    This configuration will only flag exact matches and may miss some vulnerabilities but produces fewer false positives.
+  </Accordion>
+
+  <Accordion title="Balanced (recommended)" icon="scale-balanced">
+    Use these settings for a balance between sensitivity and accuracy:
+    
+    - **Scanners**: Enable all options
+    - **Partial matching**: Enabled
+    - **Partial minimum length**: 5
+    - **Case insensitive**: Enabled
+    - **Clear on refresh**: Disabled
+    
+    This is the default configuration and works well for most testing scenarios.
+  </Accordion>
+</AccordionGroup>
+
+## Saving settings
+
+All settings are automatically saved to your browser's local storage and persist across browser sessions. Each browser profile maintains its own settings.
