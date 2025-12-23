@@ -1,94 +1,171 @@
 ---
 title: 'Development'
-description: 'Preview changes locally to update your docs'
+description: 'Contribute to Gecko development'
 ---
 
 <Info>
   **Prerequisites**:
-  - Node.js version 19 or higher
-  - A docs repository with a `docs.json` file
+  - Node.js
+  - npm
+  - Git
 </Info>
 
-Follow these steps to install and run Mintlify on your operating system.
+## Setting up your development environment
+
+Follow these steps to set up Gecko for local development.
 
 <Steps>
-<Step title="Install the Mintlify CLI">
+<Step title="Fork and clone the repository">
+
+1. Fork the repository on GitHub
+2. Clone your fork locally:
 
 ```bash
-npm i -g mint
+git clone https://github.com/YOUR_USERNAME/gecko.git
+cd gecko
 ```
+
 </Step>
 
-<Step title="Preview locally">
-
-Navigate to your docs directory where your `docs.json` file is located, and run the following command:
+<Step title="Install dependencies">
 
 ```bash
-mint dev
+npm install
 ```
 
-A local preview of your documentation will be available at `http://localhost:3000`.
+</Step>
+
+<Step title="Build the extension">
+
+Build for your target browser:
+
+```bash
+# Chrome
+npm run build:chrome
+
+# Firefox
+npm run build:ff
+```
+
+The build process creates a `dist` folder with all necessary extension files.
+
+</Step>
+
+<Step title="Load the extension in your browser">
+
+**For Chrome:**
+
+1. Navigate to `chrome://extensions/`
+2. Enable **Developer mode**
+3. Click **Load unpacked**
+4. Select the `dist` folder
+
+**For Firefox:**
+
+1. Navigate to `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on**
+3. Select any file in the `dist` folder
 
 </Step>
 </Steps>
 
-## Custom ports
+## Project structure
 
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. For example, to run Mintlify on port 3333, use this command:
+```
+gecko/
+├── src/
+│   ├── components/       # React components
+│   │   ├── findings-table.tsx    # Main findings table UI
+│   │   ├── finding-drawer.tsx    # Detailed finding view
+│   │   └── findings-context.tsx  # State management
+│   ├── pages/           # Extension pages
+│   ├── shared/          # Shared utilities and types
+│   └── sw/              # Service worker
+├── public/              # Static assets and manifests
+└── tests/               # Test files
+```
+
+## Key components
+
+### Findings table
+
+The findings table component (`src/components/findings-table.tsx`) displays discovered CSPT vulnerabilities with a compact, modern interface:
+
+- **Header**: Shows finding count and "Clear All" button
+- **Table rows**: Display finding index, source value, source URL (S), and target URL (T)
+- **Hover effects**: Smooth transitions on row hover
+- **Click handling**: Opens detailed view in drawer
+
+### Recent improvements
+
+The findings table has been updated with:
+
+- Compact design with reduced padding and smaller fonts
+- Finding count displayed in the header
+- Inline source and target URLs with "S" and "T" labels
+- Improved visual hierarchy with better typography
+- Smoother hover transitions
+
+## Making changes
+
+<Steps>
+<Step title="Create a feature branch">
 
 ```bash
-mint dev --port 3333
+git checkout -b feature/your-feature-name
 ```
 
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
+</Step>
 
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
+<Step title="Make your changes">
 
-## Mintlify versions
+Edit the relevant files in the `src/` directory. The extension will need to be rebuilt after changes.
 
-Please note that each CLI release is associated with a specific version of Mintlify. If your local preview does not align with the production version, please update the CLI:
+</Step>
+
+<Step title="Rebuild and test">
 
 ```bash
-npm mint update
+npm run build:chrome
 ```
 
-## Validating links
+Reload the extension in your browser to test changes.
 
-The CLI can assist with validating links in your documentation. To identify any broken links, use the following command:
+</Step>
+
+<Step title="Commit and push">
 
 ```bash
-mint broken-links
+git add .
+git commit -m "Add some feature"
+git push origin feature/your-feature-name
 ```
 
-## Deployment
+</Step>
 
-If the deployment is successful, you should see the following:
+<Step title="Open a pull request">
 
-<Frame>
-  <img src="/images/checks-passed.png" alt="Screenshot of a deployment confirmation message that says All checks have passed." style={{ borderRadius: '0.5rem' }} />
-</Frame>
+Go to the GitHub repository and open a pull request from your feature branch.
 
-## Code formatting
+</Step>
+</Steps>
 
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
+## Contributing guidelines
 
-## Troubleshooting
+We welcome contributions! Please follow these guidelines:
 
-<AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
+- Write clear, descriptive commit messages
+- Follow the existing code style and conventions
+- Test your changes thoroughly before submitting
+- Update documentation if you add new features
+- Keep pull requests focused on a single feature or fix
 
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of the CLI: `npm remove -g mint`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall the CLI: `npm i -g mint`
-  </Accordion>
+## Need help?
 
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the `~/.mintlify` folder. Then run `mint dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in the latest CLI version? Check out the [CLI changelog](https://www.npmjs.com/package/mintlify?activeTab=versions).
+<Card
+  title="Report an issue"
+  icon="github"
+  href="https://github.com/vitorfhc/gecko/issues"
+>
+  Found a bug or have a feature request? Open an issue on GitHub.
+</Card>
