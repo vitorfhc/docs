@@ -1,94 +1,95 @@
 ---
-title: 'Development'
-description: 'Preview changes locally to update your docs'
+title: 'Using Gecko'
+description: 'Learn how to use Gecko to discover Client-Side Path Traversal vulnerabilities'
 ---
 
-<Info>
-  **Prerequisites**:
-  - Node.js version 19 or higher
-  - A docs repository with a `docs.json` file
-</Info>
+Once you have Gecko installed, you can start using it to discover potential CSPT vulnerabilities in web applications.
 
-Follow these steps to install and run Mintlify on your operating system.
+## Opening the DevTools panel
 
 <Steps>
-<Step title="Install the Mintlify CLI">
+<Step title="Open DevTools">
 
-```bash
-npm i -g mint
-```
+Open Chrome DevTools by pressing `F12` or right-clicking on the page and selecting **Inspect**.
+
 </Step>
 
-<Step title="Preview locally">
+<Step title="Navigate to the Gecko panel">
 
-Navigate to your docs directory where your `docs.json` file is located, and run the following command:
+In the DevTools toolbar, you'll see a **Gecko** tab. Click on it to open the Gecko panel.
 
-```bash
-mint dev
-```
-
-A local preview of your documentation will be available at `http://localhost:3000`.
+<Tip>If you don't see the Gecko tab, try closing and reopening DevTools.</Tip>
 
 </Step>
 </Steps>
 
-## Custom ports
+## Viewing findings
 
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. For example, to run Mintlify on port 3333, use this command:
+As you browse a web application, Gecko automatically monitors HTTP requests and analyzes them for potential CSPT vulnerabilities.
 
-```bash
-mint dev --port 3333
-```
+### Understanding the findings table
 
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
+The Gecko panel displays a table with all detected findings. Each row represents a potential vulnerability with the following information:
 
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
+- **Source**: Where the potentially malicious input originated (query parameter, path, or variable)
+- **Source URL**: The URL containing the source value
+- **Target URL**: The HTTP request that included the source value
+- **Type**: The type of source (e.g., "Query Parameter", "Path", "Null Variable")
 
-## Mintlify versions
+### Viewing finding details
 
-Please note that each CLI release is associated with a specific version of Mintlify. If your local preview does not align with the production version, please update the CLI:
+Click on any finding in the table to open a detailed drawer with more information:
 
-```bash
-npm mint update
-```
+- Full source and target URLs
+- The exact value that was matched
+- Source type classification
 
-## Validating links
+### Real-time badge
 
-The CLI can assist with validating links in your documentation. To identify any broken links, use the following command:
+The Gecko extension icon displays a badge showing the number of current findings. This allows you to monitor vulnerabilities without opening DevTools.
 
-```bash
-mint broken-links
-```
+## Searching and filtering
 
-## Deployment
+Use the search bar at the top of the Gecko panel to filter findings by:
 
-If the deployment is successful, you should see the following:
+- Source URL
+- Target URL
+- Source value
 
-<Frame>
-  <img src="/images/checks-passed.png" alt="Screenshot of a deployment confirmation message that says All checks have passed." style={{ borderRadius: '0.5rem' }} />
-</Frame>
+This helps you focus on specific types of vulnerabilities or particular parts of the application.
 
-## Code formatting
+## Configuring settings
 
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
+Click the Gecko extension icon in your browser toolbar to open the settings popup. Here you can customize:
 
-## Troubleshooting
+- **Scanners**: Which types of sources to monitor
+- **Matching rules**: How strictly to match source values in target URLs
+- **Display options**: Whether to clear findings on page refresh
+
+See the [Configuration](/configuration) page for detailed information about each setting.
+
+## Best practices
 
 <AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
-
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of the CLI: `npm remove -g mint`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall the CLI: `npm i -g mint`
+  <Accordion title="Test in a safe environment" icon="shield">
+    Always use Gecko in a testing or development environment, not on production systems you don't own or have permission to test.
   </Accordion>
 
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the `~/.mintlify` folder. Then run `mint dev` again.
+  <Accordion title="Verify findings manually" icon="magnifying-glass">
+    Gecko identifies potential vulnerabilities, but you should manually verify each finding to confirm it's a real security issue and not a false positive.
+  </Accordion>
+
+  <Accordion title="Clear findings between tests" icon="broom">
+    Enable "Clear on refresh" in settings to start fresh when testing different pages or applications.
+  </Accordion>
+
+  <Accordion title="Adjust sensitivity" icon="sliders">
+    If you're getting too many false positives, increase the minimum partial match length or disable partial matching in the settings.
   </Accordion>
 </AccordionGroup>
 
-Curious about what changed in the latest CLI version? Check out the [CLI changelog](https://www.npmjs.com/package/mintlify?activeTab=versions).
+## Privacy and security
+
+Gecko operates entirely locally in your browser. No data is collected, stored, or transmitted to external servers. All analysis happens on your machine.
+
+For more information, see the [Privacy Policy](https://github.com/vitorfhc/gecko/blob/main/PRIVACY.md).
