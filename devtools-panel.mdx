@@ -1,0 +1,125 @@
+---
+title: "DevTools panel"
+description: "View and manage CSPT findings in the Gecko DevTools panel"
+---
+
+## Overview
+
+The Gecko DevTools panel provides a compact, streamlined interface for viewing and managing Client-Side Path Traversal (CSPT) findings discovered during your browsing session.
+
+## Accessing the panel
+
+<Steps>
+<Step title="Open DevTools">
+
+Press `F12` or right-click on any page and select **Inspect** to open your browser's DevTools.
+
+</Step>
+
+<Step title="Navigate to Gecko panel">
+
+Click on the **Gecko** tab in the DevTools panel. If you don't see it, click the `>>` icon to reveal additional panels.
+
+</Step>
+</Steps>
+
+## Findings table
+
+The findings table displays all detected CSPT vulnerabilities in a compact, easy-to-scan format.
+
+### Table structure
+
+Each row in the findings table shows:
+
+- **Index number**: A unique identifier for each finding (displayed on the left)
+- **Source value**: The value that triggered the finding (displayed prominently)
+- **Source URL**: The URL where the finding originated (labeled with **S**)
+- **Target URL**: The destination URL affected by the finding (labeled with **T**)
+- **Chevron icon**: Indicates the row is clickable for more details
+
+### Header
+
+The table header displays:
+
+- **Finding count**: Shows the total number of findings in parentheses (e.g., "Findings (5)")
+- **Clear All button**: Removes all findings from the table
+
+### Viewing finding details
+
+To view detailed information about a specific finding:
+
+1. Click anywhere on the finding row in the table
+2. A drawer will open on the right side showing complete details including:
+   - Full source and target URLs
+   - Request and response information
+   - Stack traces
+   - Additional metadata
+
+<Note>
+You must click on the row to open the details drawer. The URLs in the table are not clickable links.
+</Note>
+
+## Visual design
+
+The findings table features a modern, compact design:
+
+- **Reduced padding**: Maximizes visible findings without scrolling
+- **Small, readable fonts**: 13px for source values, 10px for URLs
+- **Subtle colors**: Gray tones for better focus on important information
+- **Smooth transitions**: Hover effects provide visual feedback
+- **Clear hierarchy**: Source value is emphasized, URLs are secondary
+
+## Managing findings
+
+### Clearing findings
+
+To remove all findings from the table:
+
+1. Click the **Clear All** button in the top-right corner of the table header
+2. All findings will be immediately removed
+
+<Warning>
+Clearing findings is permanent and cannot be undone. Make sure to review any important findings before clearing.
+</Warning>
+
+### Real-time updates
+
+The findings table updates automatically as new CSPT vulnerabilities are detected:
+
+- New findings appear at the bottom of the table
+- The finding count in the header updates immediately
+- The extension icon badge shows the current number of findings
+
+## Tips for effective use
+
+<AccordionGroup>
+  <Accordion icon="eye" title="Scan findings quickly">
+    The compact design allows you to scan multiple findings at a glance. Look for patterns in source values or URLs to identify common vulnerability types.
+  </Accordion>
+  
+  <Accordion icon="mouse-pointer" title="Click for details">
+    Remember to click on any row to see full details. The table shows cropped URLs for space efficiency, but the drawer displays complete information.
+  </Accordion>
+  
+  <Accordion icon="broom" title="Clear regularly">
+    Clear findings between testing sessions to avoid confusion. The extension tracks findings per tab, so clearing helps maintain focus on current work.
+  </Accordion>
+  
+  <Accordion icon="bell" title="Monitor the badge">
+    Keep an eye on the extension icon badge to see finding counts without opening DevTools. This helps you catch vulnerabilities as they occur.
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+
+<Card title="Installation" icon="download" href="/quickstart">
+  Learn how to install Gecko from the Chrome Web Store or build it manually.
+</Card>
+
+<Card title="Development" icon="code" href="/development">
+  Contribute to Gecko development and improve the DevTools panel.
+</Card>
+
+</CardGroup>
