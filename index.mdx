@@ -1,97 +1,72 @@
 ---
 title: "Introduction"
-description: "Welcome to the new home for your documentation"
+description: "Automated Client-Side Path Traversal discovery tool for security testing"
 ---
 
-## Setting up
+# Gecko 🦎
 
-Get your documentation site up and running in minutes.
+Gecko is a powerful cross-browser extension designed to automate the discovery of Client-Side Path Traversals (CSPT) in web applications. It seamlessly integrates with DevTools and provides a user-friendly interface for identifying and analyzing CSPT vulnerabilities.
+
+## What is Client-Side Path Traversal?
+
+Client-Side Path Traversal (CSPT) is a security vulnerability where user-controlled input from the URL (query parameters, path segments) is used to construct paths for fetching resources without proper validation. This can allow attackers to access unintended files or resources.
+
+## Key features
+
+<CardGroup cols={2}>
+  <Card
+    title="Automated discovery"
+    icon="magnifying-glass"
+  >
+    Automatically detect potential CSPT vulnerabilities as you browse web applications.
+  </Card>
+  <Card
+    title="DevTools integration"
+    icon="terminal"
+  >
+    View all findings in a dedicated DevTools panel with detailed information.
+  </Card>
+  <Card
+    title="Real-time alerts"
+    icon="bell"
+  >
+    Badge on the extension icon shows the number of current findings in real-time.
+  </Card>
+  <Card
+    title="Configurable settings"
+    icon="sliders"
+  >
+    Customize scanning behavior and matching rules to fit your testing needs.
+  </Card>
+</CardGroup>
+
+## Getting started
 
 <Card
-  title="Start here"
-  icon="rocket"
+  title="Installation"
+  icon="download"
   href="/quickstart"
   horizontal
 >
-  Follow our three step quickstart guide.
+  Install Gecko from the Chrome Web Store or build it manually.
 </Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
 
 <Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
+  title="Using Gecko"
+  icon="play"
+  href="/usage"
+  horizontal
 >
-  Browse our showcase of exceptional documentation sites.
+  Learn how to use Gecko to find vulnerabilities in web applications.
 </Card>
+
+## How it works
+
+Gecko monitors HTTP requests made by your browser and analyzes them for potential CSPT vulnerabilities by:
+
+1. **Scanning sources**: Extracting values from query parameters, URL paths, and JavaScript variables
+2. **Tracking targets**: Monitoring outgoing HTTP requests
+3. **Matching patterns**: Identifying when source values appear in target URLs
+4. **Reporting findings**: Displaying potential vulnerabilities in the DevTools panel
+
+All analysis happens locally in your browser - no data is sent to external servers.
